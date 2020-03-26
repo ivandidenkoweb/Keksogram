@@ -99,6 +99,154 @@ renderPictures(pictures);
 
 // renderFirstPicture(pictures);
 
+// Настройки изображения
+
+var ScaleParameter = {
+    MIN: 25,
+    MAX: 100,
+    STEP: 25
+  };
+var LimitEffectValue = {
+    MARVIN_MAX: 100,
+    PHOBOS_MAX: 3,
+    HEAT_MAX: 3,
+    HEAT_MIN: 1,
+    DEFAULT: 100
+  };
+
+var buttonMinus = document.querySelector('.upload-resize-controls-button-dec');
+var buttonPlus = document.querySelector('.upload-resize-controls-button-inc');
+var inputValue = document.querySelector('.upload-resize-controls-value');
+var imagePreview = document.querySelector('.effect-image-preview');
+var levelPin = document.querySelector('.upload-effect-level-pin');
+var levelLine = document.querySelector('.upload-effect-level-line');
+var sliderOverlay = document.querySelector('.upload-effect-level');
+var levelValue = document.querySelector('.upload-effect-level-val');
+var effectInputs = document.querySelectorAll('input[name="effect"]');
+var effect = 'none';
+var level;
+var levelLineWidth = parseInt(getComputedStyle(sliderOverlay).width) - parseInt(getComputedStyle(levelLine).left) - parseInt(getComputedStyle(levelLine).right);
+
+// Масштаб
+
+var valueDec = function () {
+    var value = parseInt(inputValue.value);
+
+    if (value <= ScaleParameter.MAX && value > ScaleParameter.MIN) {
+        inputValue.value = value - ScaleParameter.STEP + '%';
+        imagePreview.style.transform = 'scale(' + (parseInt(inputValue.value) / 100) + ')';
+    }
+};
+
+var valueInc = function () {
+    var value = parseInt(inputValue.value);
+
+    if (value < ScaleParameter.MAX && value >= ScaleParameter.MIN) {
+        inputValue.value = value + ScaleParameter.STEP + '%';
+        imagePreview.style.transform = 'scale(' + (parseInt(inputValue.value) / 100) + ')';
+    }
+};
+
+buttonMinus.addEventListener('click', valueDec);
+buttonPlus.addEventListener('click', valueInc);
+
+// Наложение эффекта на изображение
+
+var reset = function () {
+    levelPin.style.left = LimitEffectValue.DEFAULT + '%';
+    levelValue.style.width = LimitEffectValue.DEFAULT + '%';
+};
+
+var changeStyle = function (effect) {
+    if (effect === 'none') {
+        imagePreview.style.filter = '';
+    } else if (effect === 'chrome') {
+        imagePreview.style.filter = 'grayscale(' + level + ')';
+    } else if (effect === 'sepia') {
+        imagePreview.style.filter = 'sepia(' + level + ')';
+    } else if (effect === 'marvin') {
+        imagePreview.style.filter = 'invert(' + (level * LimitEffectValue.MARVIN_MAX) + '%)';
+    } else if (effect === 'phobos') {
+        imagePreview.style.filter = 'blur(' + (level * LimitEffectValue.PHOBOS_MAX).toFixed(1) + 'px)';
+    } else if (effect === 'heat') {
+        imagePreview.style.filter = 'brightness(' + (level * (LimitEffectValue.HEAT_MAX - LimitEffectValue.HEAT_MIN) + LimitEffectValue.HEAT_MIN).toFixed(2) + ')';
+    }
+};
+
+var onPinMouseDown = function (evt) {
+    evt.preventDefault();
+
+    var startCoordX = evt.clientX;
+    var newLevelPinLeft;
+
+    var onPinMouseMove = function (moveEvt) {
+        moveEvt.preventDefault();
+
+        var shiftX = startCoordX - moveEvt.clientX;
+
+        startCoordX = moveEvt.clientX;
+        newLevelPinLeft = levelPin.offsetLeft - shiftX;
+
+        if ((newLevelPinLeft >= 0) && (newLevelPinLeft <= levelLineWidth)) {
+            levelPin.style.left = newLevelPinLeft + 'px';
+            level = (Math.round((LimitEffectValue.DEFAULT * (newLevelPinLeft)) / levelLineWidth) / 100).toFixed(2);
+            levelValue.style.width = level * 100 + '%';
+            changeStyle(effect);
+            console.log(level);
+        }
+    };
+
+    var onPinMouseUp = function (upEvt) {
+        upEvt.preventDefault();
+
+        document.removeEventListener('mousemove', onPinMouseMove);
+        document.removeEventListener('mouseup', onPinMouseUp);
+    };
+
+    document.addEventListener('mousemove', onPinMouseMove);
+    document.addEventListener('mouseup', onPinMouseUp);
+
+};
+
+var definitionEffect = function (evt) {
+    effect = evt.target.getAttribute('value');
+    reset();
+    console.log(effect);
+    if (effect === 'none') {
+        sliderOverlay.classList.add('hidden');
+    } else {
+        sliderOverlay.classList.remove('hidden');
+    }
+    switch (effect) {
+        case 'none':
+            imagePreview.style.filter = '';
+            break;
+        case 'chrome':
+            imagePreview.style.filter = 'grayscale(1)';
+            break;
+        case 'sepia':
+            imagePreview.style.filter = 'sepia(1)';
+            break;
+        case 'marvin':
+            imagePreview.style.filter = 'invert(100%)';
+            break;
+        case 'phobos':
+            imagePreview.style.filter = 'blur(3px)';
+            break;
+        case 'heat':
+            imagePreview.style.filter = 'brightness(3)';
+            break;
+    }
+};
+
+reset();
+sliderOverlay.classList.add('hidden');
+levelPin.addEventListener('mousedown', onPinMouseDown);
+
+for (var i = 0; i < effectInputs.length; i++) {
+    effectInputs[i].addEventListener('change', definitionEffect);
+}
+
 // Загрузка изображения и показ формы редактирования
 
 var uploadFile = document.querySelector('#upload-file');
@@ -133,6 +281,10 @@ uploadFormCancel.addEventListener('keydown', function (evt) {
         closeUploadOverlay();
     }
 });
+
+// Функционал формы редактирования
+
+
 
 // Показ изображения в полноэкранном режиме
 
@@ -194,7 +346,7 @@ var error = {
             return 'Хэштег ' + hashtag + ' имеет больше 20-ти символов';
         } else if (length > 140) {
             return 'Описание имеет больше 140-ка символов';
-        }  
+        }
     },
     isNoHaveSharp: function (hashtag) {
         return 'Хэштег ' + hashtag + ' не начинаеться с символа #';
@@ -246,7 +398,7 @@ uploadFormSubmit.addEventListener('click', function () {
         }
     }
 
-    if (description.length > 140) {   
+    if (description.length > 140) {
         error.errorInclusion(uploadFormDescription);
         error.isLong(arr[i], 140);
     } else {
