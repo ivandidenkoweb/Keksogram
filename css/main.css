@@ -52,7 +52,7 @@ body {
   left: -100px;
 }
 
-.filters-radio:checked + .filters-item {
+.filters-radio:checked+.filters-item {
   color: #000000;
   text-decoration: none;
 
@@ -120,31 +120,31 @@ body {
 .upload-effect-label-chrome .upload-effect-preview,
 .effect-chrome {
   -webkit-filter: grayscale(1);
-          filter: grayscale(1);
+  filter: grayscale(1);
 }
 
 .upload-effect-label-sepia .upload-effect-preview,
 .effect-sepia {
   -webkit-filter: sepia(1);
-          filter: sepia(1);
+  filter: sepia(1);
 }
 
 .upload-effect-label-marvin .upload-effect-preview,
 .effect-marvin {
   -webkit-filter: invert(100%);
-          filter: invert(100%);
+  filter: invert(100%);
 }
 
 .upload-effect-label-phobos .upload-effect-preview,
 .effect-phobos {
   -webkit-filter: blur(5px);
-          filter: blur(5px);
+  filter: blur(5px);
 }
 
 .upload-effect-label-heat .upload-effect-preview,
 .effect-heat {
   -webkit-filter: brightness(3);
-          filter: brightness(3);
+  filter: brightness(3);
 }
 
 .upload-input {
@@ -179,11 +179,11 @@ body {
   display: none;
 }
 
-.upload-input-hasvalue + .upload-file {
+.upload-input-hasvalue+.upload-file {
   display: none;
 }
 
-.upload-input-hasvalue + .upload-file + .upload-submit {
+.upload-input-hasvalue+.upload-file+.upload-submit {
   display: block;
 }
 
@@ -208,7 +208,7 @@ body {
 
   position: absolute;
   top: 0;
-  left: 100%;
+  right: 0;
   margin-left: 10px;
 
   border: 0;
@@ -310,11 +310,11 @@ body {
 }
 
 .upload-effect-label:hover,
-input[type=radio]:checked + .upload-effect-label {
+input[type=radio]:checked+.upload-effect-label {
   color: #ffe753;
 }
 
-input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
+input[type=radio]:checked+.upload-effect-label .upload-effect-preview {
   border-color: #ffe753;
 }
 
@@ -649,9 +649,11 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   .picture:nth-child(1) {
     margin-right: 600px;
   }
+
   .picture:nth-child(3) {
     margin-right: 600px;
   }
+
   .picture:nth-child(5) {
     margin-right: 600px;
   }
@@ -672,13 +674,15 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   }
 }
 
-@media only screen and (max-width: 999px){
+@media only screen and (max-width: 999px) {
   .picture:nth-child(1) {
     margin-right: 600px;
   }
+
   .picture:nth-child(2) {
     margin-right: 600px;
   }
+
   .picture:nth-child(3) {
     margin-right: 600px;
   }
@@ -775,6 +779,111 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 
 .likes-count-liked:before {
   background-position-x: -18px;
+}
+
+.social {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+
+  max-width: 600px;
+
+  color: #000000;
+  font-family: "Open Sans", "Arial", sans-serif;
+  font-weight: 400;
+  text-transform: none;
+
+  background-color: #ffffff;
+}
+
+.social-header {
+  margin-bottom: 15px;
+  padding: 15px 15px;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: space-between;
+
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+
+  border-bottom: 1px solid #cccccc;
+}
+
+.social-picture {
+  display: block;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.social-caption {
+  margin: 0;
+  margin-right: 15px;
+}
+
+.social-comments {
+  padding: 15px;
+  list-style: none;
+}
+
+.social-comment {
+  display: flex;
+  justify-content: space-between;
+}
+
+.social-comment-count {
+  padding: 15px;
+  background: #333333;
+  color: #ffe753;
+}
+
+.social-loadmore,
+.social-footer-btn,
+.gallery-overlay-cancel {
+  padding: 0 20px;
+  margin-bottom: 30px;
+  font: 14px "Open Sans";
+  font-weight: 900;
+  color: #ffe753;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 46px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.social-footer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.social-footer-text {
+  width: 300px;
+  font: 14px "Open Sans";
+  color: #000000;
+  display: block;
+  margin: 0 0 30px;
+  padding: 8px 10px;
+  border-radius: 5px;
+}
+
+.likes-count {
+  position: relative;
+  padding-left: 30px;
+
+  color: #f48181;
+
+  cursor: pointer;
 }
 
 .footer {
