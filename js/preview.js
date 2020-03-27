@@ -53,25 +53,21 @@
         window.util.isEnterEvent(evt, closeGallery);
     };
 
-    var showPicture = function (evt) {
-        evt.preventDefault();
+    var createBigPicture = function (picture) {
+        galleryOverlay.querySelector('img').setAttribute('src', picture.url);
+        galleryOverlay.querySelector('.likes-count').textContent = picture.likes;
+        galleryOverlay.querySelector('.comments-count').textContent = picture.comments.length + '';
+    };
 
-        var target = evt.target;
-        console.log(target);
+    window.showPicture = function (evt, picture) {
+        evt.preventDefault();
+        console.log(picture);
+
+        createBigPicture(picture);
 
         galleryOverlay.classList.remove('hidden');
-        galleryOverlay.querySelector('img').setAttribute('src', target.getAttribute('src'));
-
         galleryOverlayClose.addEventListener('click', closeGallery);
         galleryOverlayClose.addEventListener('keydown', enterPress);
         document.addEventListener('keydown', escPress);
-    };
-
-    window.createPreview = function () {
-        var smallPictures = document.querySelectorAll('.picture');
-
-        for (var i = 0; i < smallPictures.length; i++) {
-            smallPictures[i].addEventListener('click', showPicture);
-        }
     };
 })();

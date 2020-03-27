@@ -13,6 +13,10 @@
         pictureElement.querySelector('.picture-likes').textContent = picture.likes;
         pictureElement.querySelector('.picture-comments').textContent = picture.comments[window.util.getRandomNumber(0, picture.comments.length - 1)].message;
 
+        pictureElement.addEventListener('click', function (evt) {
+            window.showPicture(evt, picture);
+        });
+
         return pictureElement;
     };
 
