@@ -38,7 +38,6 @@
 // Показ изображения в полноэкранном режиме
 
 (function () {
-    var smallPictures = document.querySelectorAll('.picture');
     var galleryOverlay = document.querySelector('.gallery-overlay');
     var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
 
@@ -58,6 +57,7 @@
         evt.preventDefault();
 
         var target = evt.target;
+        console.log(target);
 
         galleryOverlay.classList.remove('hidden');
         galleryOverlay.querySelector('img').setAttribute('src', target.getAttribute('src'));
@@ -67,7 +67,11 @@
         document.addEventListener('keydown', escPress);
     };
 
-    for (var i = 0; i < smallPictures.length; i++) {
-        smallPictures[i].addEventListener('click', showPicture);
-    }
+    window.createPreview = function () {
+        var smallPictures = document.querySelectorAll('.picture');
+
+        for (var i = 0; i < smallPictures.length; i++) {
+            smallPictures[i].addEventListener('click', showPicture);
+        }
+    };
 })();
