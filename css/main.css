@@ -660,12 +660,6 @@ input[type=radio]:checked+.upload-effect-label .upload-effect-preview {
 
   .picture:nth-child(2),
   .picture:nth-child(4),
-  .picture:nth-child(6) {
-    /*margin-left: 11px;*/
-  }
-
-  .picture:nth-child(2),
-  .picture:nth-child(4),
   .picture:nth-child(6),
   .picture:nth-child(11),
   .picture:nth-child(16),
@@ -821,6 +815,13 @@ input[type=radio]:checked+.upload-effect-label .upload-effect-preview {
   display: block;
   -ms-flex-negative: 0;
   flex-shrink: 0;
+  margin-right: 15px;
+}
+
+.social-name {
+  margin-right: 150px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .social-caption {
@@ -835,7 +836,6 @@ input[type=radio]:checked+.upload-effect-label .upload-effect-preview {
 
 .social-comment {
   display: flex;
-  justify-content: space-between;
 }
 
 .social-comment-count {
@@ -865,6 +865,7 @@ input[type=radio]:checked+.upload-effect-label .upload-effect-preview {
 .social-footer {
   display: flex;
   justify-content: space-around;
+  padding: 0 15px;
 }
 
 .social-footer-text {

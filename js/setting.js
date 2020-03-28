@@ -59,7 +59,7 @@
     
     var changeStyle = function (effect) {
         if (effect === 'none') {
-            imagePreview.style.filter = '';
+            imagePreview.style = '';
         } else if (effect === 'chrome') {
             imagePreview.style.filter = 'grayscale(' + level + ')';
         } else if (effect === 'sepia') {
@@ -137,6 +137,14 @@
                 imagePreview.style.filter = 'brightness(3)';
                 break;
         }
+    };
+
+    window.resetSettings = function () {
+        reset();
+        imagePreview.style.transform = 'scale(1)';
+        effectInputs[0].checked = true;
+        imagePreview.style = '';
+        sliderOverlay.classList.add('hidden');
     };
     
     reset();

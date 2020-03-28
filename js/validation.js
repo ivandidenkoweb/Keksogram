@@ -7,6 +7,15 @@
     var HASHTAG_MAX_LENGTH = 20;
     var DESCRIPTION_MAX_LENGTH = 140;
 
+    var redBorder = {
+        on: function () {
+            uploadFormHashtags.style.border = '3px red solid';
+        },
+        off: function () {
+            uploadFormHashtags.style.border = 'none';
+        }
+    };
+
     var validateHashtags = function (arr) {
         if (!uploadFormHashtags.value) {
             return '';
@@ -52,16 +61,24 @@
         return '';
     };
 
+    window.cleanInputs = function () {
+        uploadFormHashtags.value = '';
+        uploadFormDescription.value = '';
+        redBorder.off();
+    };
+
     uploadFormHashtags.addEventListener('input', function () {
         var hashtags = uploadFormHashtags.value.replace(/\s+/g, ' ').trim();
         var hashtagsArr = hashtags.split(' ');
 
         uploadFormHashtags.setCustomValidity('');
+        redBorder.off();
 
         var errorMessage = validateHashtags(hashtagsArr);
 
         if (errorMessage !== '') {
             uploadFormHashtags.setCustomValidity(errorMessage);
+            redBorder.on();
         }
     });
     
@@ -69,9 +86,11 @@
         var descriptionArr = uploadFormDescription.value;
 
         uploadFormDescription.setCustomValidity('');
+        redBorder.off();
 
         if (descriptionArr.length > DESCRIPTION_MAX_LENGTH) {
             uploadFormDescription.setCustomValidity('Максимальная длина описания составляет 140 символов, включая символ пробелы. Сократите описание.');
+            redBorder.on();
         }
     });
 })();

@@ -14,6 +14,8 @@
     var closeUploadOverlay = function () {
         uploadOverlay.classList.add('hidden');
         document.removeEventListener('keydown', onPopupEscPress);
+        window.resetSettings();
+        window.cleanInputs();
     };
 
     window.onPopupEscPress = function (evt) {
@@ -30,6 +32,8 @@
 
     var onLoad = function () {
         uploadOverlay.classList.add('hidden');
+        window.resetSettings();
+        window.cleanInputs();
     };
 
     uploadForm.addEventListener('submit', function (evt) {

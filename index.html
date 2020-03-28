@@ -145,33 +145,6 @@
       <div class="gallery-overlay-controls-like">Нравится <span class="likes-count">0</span></div>
       <div class="gallery-overlay-controls-comments"><span class="comments-count">125</span> комментариев</div>
     </div>
-
-
-    <div class="gallery-overlay-social social">
-      <div class="social-header">
-        <img class="social-picture" src="img/avatar-1.svg" alt="Аватар автора фотографии" width="35" height="35">
-        <p class="social-caption">Тестим новую камеру! =)</p>
-      </div>
-      <div class="social-comment-count">5 из <span class="comments-count">125</span> комментариев</div>
-      <ul class="social-comments">
-        <li class="social-comment">
-          <img class="social-picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-          <p class="social-text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
-        </li>
-        <li class="social-comment">
-          <img class="social-picture" src="img/avatar-3.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-           <p class="social-text">Да это фоташоп!!!!!!!!</p>
-        </li>
-      </ul>
-      <button class="social-loadmore" type="button">Загрузить еще</button>
-      <div class="social-footer">
-        <img class="social-picture" src="img/avatar-6.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-        <input type="text" class="social-footer-text" placeholder="Ваш комментарий...">
-        <button type="button" class="social-footer-btn" name="button">Отправить</button>
-      </div>
-      </div>
-        <button type="reset" class="gallery-overlay-cancel cancel" id="picture-cancel">Закрыть</button>
-      </div>
   </div>
 </div>
 
@@ -183,6 +156,32 @@
       <span class="picture-stat picture-likes"></span>
     </span>
   </a>
+</template>
+
+<template id="gallery-social-template" style="display: none;">
+  <div class="gallery-overlay-social social">
+    <div class="social-header">
+      <img class="social-picture" src="" alt="Аватар автора фотографии" width="35" height="35">
+      <p class="social-caption"></p>
+    </div>
+    <div class="social-comment-count"> из комментариев</div>
+    <ul class="social-comments">
+      <li class="social-comment">
+        <img class="social-picture" src="img/avatar-.svg" alt="Аватар комментатора фотографии" width="35" height="35">
+        <p class="social-name"></p>
+        <p class="social-text"></p>
+      </li>
+    </ul>
+    <button class="social-loadmore" type="button">Загрузить еще</button>
+    <div class="social-footer">
+      <img class="social-picture" src="img/avatar-.svg" alt="Аватар комментатора фотографии" width="35" height="35">
+      <input type="text" class="social-footer-text" placeholder="Ваш комментарий...">
+      <button type="button" class="social-footer-btn" name="button">Отправить</button>
+      <div>
+        <button type="reset" class="gallery-overlay-cancel cancel" id="picture-cancel">Закрыть</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script src="js/util.js"></script>
