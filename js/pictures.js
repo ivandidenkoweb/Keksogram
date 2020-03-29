@@ -1,6 +1,13 @@
 // модуль для отрисовки миниатюры;
 
 (function () {
+    var filters = document.querySelector('.filters');
+    var popularInput = document.querySelector('#filter-popular');
+    var discussedInput = document.querySelector('#filter-discussed');
+    var newInput = document.querySelector('#filter-new');
+    var pictures = null;
+    var evtTarget = null;
+
     //  функция создания DOM-элемента на основе JS-объекта
 
     var createPicture = function (picture) {
@@ -24,7 +31,7 @@
 
     var renderPictures = function (pictures) {
         var similarListElement = document.querySelector('.pictures');
-
+        similarListElement.innerHTML = '';
         var fragment = document.createDocumentFragment();
         for (var i = 0; i < pictures.length; i++) {
             fragment.appendChild(createPicture(pictures[i]));
@@ -32,9 +39,42 @@
         similarListElement.appendChild(fragment);
     };
 
-    var onLoad = function (pictures) {
-        renderPictures(pictures);
+    var updatePicture = function () {
+        var fiteredPictures;
+        if (evtTarget === discussedInput) {
+            fiteredPictures = pictures.slice().sort(function (left, right) {
+                return right.comments.length - left.comments.length;
+            });
+        } else if (evtTarget === newInput) {
+            fiteredPictures = pictures.slice().filter(function (it, i, arr) {
+                return arr.indexOf(it) === i;
+            });
+            fiteredPictures = window.util.shuffle(fiteredPictures).slice(0, 10);
+        } else {
+            fiteredPictures = pictures;
+        }
+        renderPictures(fiteredPictures);
     };
+
+    var onLoad = function (data) {
+        pictures = data;
+        console.log(pictures);
+        renderPictures(pictures);
+        filters.classList.remove('hidden');
+    };
+
+    discussedInput.addEventListener('click', function (evt) {
+        evtTarget = evt.target;
+        window.debounce(updatePicture);
+    });
+    newInput.addEventListener('click', function (evt) {
+        evtTarget = evt.target;
+        window.debounce(updatePicture);
+    });
+    popularInput.addEventListener('click', function (evt) {
+        evtTarget = evt.target;
+        window.debounce(updatePicture);
+    });
 
     window.onError = function (errorMessage) {
         var node = document.createElement('div');

@@ -92,7 +92,6 @@
                 level = (Math.round((limitEffectValue.DEFAULT * (newLevelPinLeft)) / levelLineWidth) / 100).toFixed(2);
                 levelValue.style.width = level * 100 + '%';
                 changeStyle(effect);
-                console.log(level);
             }
         };
     
@@ -111,7 +110,6 @@
     var definitionEffect = function (evt) {
         effect = evt.target.getAttribute('value');
         reset();
-        console.log(effect);
         if (effect === 'none') {
             sliderOverlay.classList.add('hidden');
         } else {
