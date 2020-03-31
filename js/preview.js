@@ -29,8 +29,8 @@
             copyElement.querySelector('img').setAttribute('src', arr[i].avatar);
             copyElement.querySelector('.social-name').textContent = arr[i].name;
             copyElement.querySelector('.social-text').textContent = arr[i].message;
-            if (i >= 5) {
-                copyElement.style.display = 'none';
+            if (i >= MAX_COMMENTS) {
+                copyElement.classList.add('hidden');
             }
             parentElem.appendChild(copyElement);
         }
@@ -67,12 +67,41 @@
             addComments(arrComments, liComment, ulComments);
         }
         galleryOverlayPreview.appendChild(socialElement);
+
+        var loadmoreBtn = document.querySelector('.social-loadmore');
+
+        if (arrComments.length <= MAX_COMMENTS) {
+            loadmoreBtn.classList.add('hidden');
+            return;
+        }
+        
+        loadmoreBtn.addEventListener('click', function () {
+            var allComments = document.querySelectorAll('.social-comment');
+            var hiddenComments = (Array.from(allComments)).filter(function (it) {
+                return it.classList.contains('hidden');
+            });
+            var сount = (hiddenComments.length < MAX_COMMENTS) ? (hiddenComments.length) : (MAX_COMMENTS % hiddenComments.length);
+            var addComments = function (сount, comments) {
+                for (var i = 0; i < сount; i++) {
+                    comments[i].classList.remove('hidden');
+                }
+                var numOpenComments = allComments.length - hiddenComments.length + сount;
+                socialElement.querySelector('.social-comment-count').textContent = numOpenComments + ' из ' + allComments.length + 'комментариев';
+            };
+            if (hiddenComments.length <= MAX_COMMENTS) {
+                addComments(сount, hiddenComments);
+                loadmoreBtn.classList.add('hidden');
+            } else {
+                addComments(сount, hiddenComments);
+            }
+        });
     };
 
     window.showPicture = function (evt, picture) {
         evt.preventDefault();
         console.log(picture);
         createPreview(picture);
+        
         galleryOverlay.classList.remove('hidden');
         galleryOverlayClose.addEventListener('click', closeGallery);
         galleryOverlayClose.addEventListener('keydown', enterPress);
