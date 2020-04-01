@@ -6,6 +6,8 @@
     var galleryOverlayPreview = document.querySelector('.gallery-overlay-preview');
     var MAX_COMMENTS = 5;
 
+    // Функции закрытия окна превью
+
     var closeGallery = function () {
         var checkSocial = document.querySelector('.gallery-overlay-social');
         galleryOverlay.classList.add('hidden');
@@ -22,19 +24,7 @@
         window.util.isEnterEvent(evt, closeGallery);
     };
 
-    var addComments = function (arr, element, parentElem) {
-        element.remove();
-        for (var i = 0; i < arr.length; i++) {
-            var copyElement = element.cloneNode(true);
-            copyElement.querySelector('img').setAttribute('src', arr[i].avatar);
-            copyElement.querySelector('.social-name').textContent = arr[i].name;
-            copyElement.querySelector('.social-text').textContent = arr[i].message;
-            if (i >= MAX_COMMENTS) {
-                copyElement.classList.add('hidden');
-            }
-            parentElem.appendChild(copyElement);
-        }
-    };
+    // Функция создания превью
 
     var createPreview = function (picture) {
         var similarSocialTemplate = document.querySelector('#gallery-social-template')
@@ -46,6 +36,20 @@
         var liComment = socialElement.querySelector('li');
         var getAvatarSrc = function () {
             return 'img/avatar-' + window.util.getRandomNumber(1, 6) + '.svg';
+        };
+
+        var addComments = function (arr, element, parentElem) {
+            element.remove();
+            for (var i = 0; i < arr.length; i++) {
+                var copyElement = element.cloneNode(true);
+                copyElement.querySelector('img').setAttribute('src', arr[i].avatar);
+                copyElement.querySelector('.social-name').textContent = arr[i].name;
+                copyElement.querySelector('.social-text').textContent = arr[i].message;
+                if (i >= MAX_COMMENTS) {
+                    copyElement.classList.add('hidden');
+                }
+                parentElem.appendChild(copyElement);
+            }
         };
 
         galleryOverlay.querySelector('img').setAttribute('src', picture.url);
@@ -74,14 +78,16 @@
             loadmoreBtn.classList.add('hidden');
             return;
         }
-        
+
+        // Обработка обновления комментариев
+
         loadmoreBtn.addEventListener('click', function () {
             var allComments = document.querySelectorAll('.social-comment');
             var hiddenComments = (Array.from(allComments)).filter(function (it) {
                 return it.classList.contains('hidden');
             });
             var сount = (hiddenComments.length < MAX_COMMENTS) ? (hiddenComments.length) : (MAX_COMMENTS % hiddenComments.length);
-            var addComments = function (сount, comments) {
+            var updateComment = function (сount, comments) {
                 for (var i = 0; i < сount; i++) {
                     comments[i].classList.remove('hidden');
                 }
@@ -89,19 +95,18 @@
                 socialElement.querySelector('.social-comment-count').textContent = numOpenComments + ' из ' + allComments.length + 'комментариев';
             };
             if (hiddenComments.length <= MAX_COMMENTS) {
-                addComments(сount, hiddenComments);
                 loadmoreBtn.classList.add('hidden');
-            } else {
-                addComments(сount, hiddenComments);
             }
+            updateComment(сount, hiddenComments);
         });
     };
 
+    // Функция показа окна превью
+
     window.showPicture = function (evt, picture) {
         evt.preventDefault();
-        console.log(picture);
         createPreview(picture);
-        
+
         galleryOverlay.classList.remove('hidden');
         galleryOverlayClose.addEventListener('click', closeGallery);
         galleryOverlayClose.addEventListener('keydown', enterPress);

@@ -75,10 +75,8 @@
     
     var onPinMouseDown = function (evt) {
         evt.preventDefault();
-    
         var startCoordX = evt.clientX;
         var newLevelPinLeft;
-    
         var onPinMouseMove = function (moveEvt) {
             moveEvt.preventDefault();
     

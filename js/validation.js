@@ -1,4 +1,4 @@
-// Валидация
+// Мщдуль валидации
 
 (function () {
     var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
@@ -15,6 +15,8 @@
             uploadFormHashtags.style.border = 'none';
         }
     };
+
+    // Функция валидации хэш-тегов
 
     var validateHashtags = function (arr) {
         if (!uploadFormHashtags.value) {
@@ -61,11 +63,15 @@
         return '';
     };
 
+    // Функция очистки полей ввода
+
     window.cleanInputs = function () {
         uploadFormHashtags.value = '';
         uploadFormDescription.value = '';
         redBorder.off();
     };
+
+    // Обработка введеных даных
 
     uploadFormHashtags.addEventListener('input', function () {
         var hashtags = uploadFormHashtags.value.replace(/\s+/g, ' ').trim();
@@ -92,5 +98,21 @@
             uploadFormDescription.setCustomValidity('Максимальная длина описания составляет 140 символов, включая символ пробелы. Сократите описание.');
             redBorder.on();
         }
+    });
+
+    uploadFormHashtags.addEventListener('focusin', function () {
+        document.removeEventListener('keydown', window.onPopupEscPress);
+    });
+
+    uploadFormHashtags.addEventListener('focusout', function () {
+        document.addEventListener('keydown', window.onPopupEscPress);
+    });
+
+    uploadFormDescription.addEventListener('focusin', function () {
+        document.removeEventListener('keydown', window.onPopupEscPress);
+    });
+
+    uploadFormDescription.addEventListener('focusout', function () {
+        document.addEventListener('keydown', window.onPopupEscPress);
     });
 })();

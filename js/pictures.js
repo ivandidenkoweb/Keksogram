@@ -1,10 +1,13 @@
-// модуль для отрисовки миниатюры;
+// Модуль для отрисовки миниатюры;
 
 (function () {
     var filters = document.querySelector('.filters');
-    var popularInput = document.querySelector('#filter-popular');
     var discussedInput = document.querySelector('#filter-discussed');
     var newInput = document.querySelector('#filter-new');
+    var discussedLabel = document.querySelector('label[for="filter-discussed"]');
+    var newLabel = document.querySelector('label[for="filter-new"]');
+    var inputs = document.querySelectorAll('.filters-radio');
+    var labels = document.querySelectorAll('.filters-item');
     var pictures = null;
     var evtTarget = null;
 
@@ -39,42 +42,58 @@
         similarListElement.appendChild(fragment);
     };
 
+    // Функция для обновления изображений в зависимости от выбраного фильтра
+
     var updatePicture = function () {
         var fiteredPictures;
-        if (evtTarget === discussedInput) {
-            fiteredPictures = pictures.slice().sort(function (left, right) {
-                return right.comments.length - left.comments.length;
-            });
-        } else if (evtTarget === newInput) {
-            fiteredPictures = pictures.slice().filter(function (it, i, arr) {
-                return arr.indexOf(it) === i;
-            });
-            fiteredPictures = window.util.shuffle(fiteredPictures).slice(0, 10);
-        } else {
-            fiteredPictures = pictures;
+
+        switch (evtTarget) {
+            case discussedInput:
+            case discussedLabel:
+                fiteredPictures = pictures.slice().sort(function (left, right) {
+                    return right.comments.length - left.comments.length;
+                });
+                break;
+            case newInput:
+            case newLabel:
+                fiteredPictures = pictures.slice().filter(function (it, i, arr) {
+                    return arr.indexOf(it) === i;
+                });
+                fiteredPictures = window.util.shuffle(fiteredPictures).slice(0, 10);
+                break;
+            default:
+                fiteredPictures = pictures;
+                break;
         }
         renderPictures(fiteredPictures);
     };
 
+    // Обработчики на клик и на нажатие Enter на фильтрах
+
+    Array.from(inputs).forEach(function (it) {
+        it.addEventListener('click', function (evt) {
+            evtTarget = evt.target;
+            window.debounce(updatePicture);
+        });
+    });
+
+    Array.from(labels).forEach(function (it) {
+        it.addEventListener('keydown', function (evt) {
+            evtTarget = evt.target;
+            window.util.isEnterEvent(evt, updatePicture);
+            it.previousElementSibling.checked = true;
+        });
+    });
+
+    // Функция удачной загрузки данных с сервера
+
     var onLoad = function (data) {
         pictures = data;
-        console.log(pictures);
         renderPictures(pictures);
         filters.classList.remove('hidden');
     };
 
-    discussedInput.addEventListener('click', function (evt) {
-        evtTarget = evt.target;
-        window.debounce(updatePicture);
-    });
-    newInput.addEventListener('click', function (evt) {
-        evtTarget = evt.target;
-        window.debounce(updatePicture);
-    });
-    popularInput.addEventListener('click', function (evt) {
-        evtTarget = evt.target;
-        window.debounce(updatePicture);
-    });
+    // Функция неудачной загрузки данныч с сервера
 
     window.onError = function (errorMessage) {
         var node = document.createElement('div');
@@ -84,7 +103,6 @@
         node.style.left = 0;
         node.style.right = 0;
         node.style.fontSize = '30px';
-
         node.textContent = errorMessage;
         document.body.insertAdjacentElement('afterbegin', node);
     };
